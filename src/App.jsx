@@ -1,26 +1,50 @@
 import { useState } from 'react'
 import './App.css'
+import BlogCard from './components/BlogCard/BlogCard'
 
-const blogsTitlesList = []
+
+const blogs = []
+const initialBlogsList = {
+  title: '',
+  content: '',
+  img: '',
+}
 
 
 function App() {
 
-  const [blogsTitles, setBlogsTitles] = useState(blogsTitlesList)
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-
+  const [blogsData, setBlogsData] = useState(initialBlogsList)
+  const [blogsList, setBlogsList] = useState(blogs)
 
   function addBlogTitle(e) {
     e.preventDefault()
-    console.log(blogsTitles);
+    console.log(blogsData);
 
-    setBlogsTitles([
-      ...blogsTitles,
-      newBlogTitle
+    const newBlog = {
+      id: Date.now(),
+      ...blogsData
+    }
+
+    setBlogsList([
+      newBlog,
+      ...blogsList
     ])
 
-    setNewBlogTitle('')
+    setBlogsData(initialBlogsList)
+
   }
+
+  function handleBlogData(e) {
+
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
+    setBlogsData({
+      ...blogsData,
+      [e.target.name]: value
+    })
+  }
+
+
 
 
   return (
@@ -31,15 +55,7 @@ function App() {
         <form onSubmit={addBlogTitle}>
 
           <div>
-            <label htmlFor="task" className="form-label">Submit your own blog!</label>
-            <div className="input-group mb-3">
-
-              <input type="text" className="form-control" placeholder="Blog Title" aria-label="Blog Title" aria-describedby="button-addon2" value={newBlogTitle} onChange={e => setNewBlogTitle(e.target.value)} />
-              <button className="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
-
-            </div>
-
-
+            <label htmlFor="blog" className="form-label">Submit your own blog!</label>
 
             <div>
               <div className='d-flex justify-content-between'>
@@ -52,96 +68,160 @@ function App() {
                     id="title"
                     placeholder="Type the title"
                     aria-describedby="titlehelper"
+                    value={blogsData.title}
+                    onChange={handleBlogData}
+                    required
                   />
                 </div>
                 <div className="mb-3 col-3">
                   <label htmlFor="img" className="form-label">Image</label>
                   <input
                     type="text"
+                    name='img'
                     className="form-control"
                     id="img "
                     placeholder="Type the image path"
                     aria-describedby="imghelper"
+                    value={blogsData.img}
+                    onChange={handleBlogData}
                   />
                 </div>
                 <div className="mb-3 col-3">
                   <label htmlFor="category" className="form-label">Category</label>
-                  <select className="form-select" aria-label="Default select example">
-                    <option selected>Choose the category</option>
-                    <option value="1">Lifestyle e Benessere</option>
-                    <option value="2">Tecnologia e Innovazione</option>
-                    <option value="3">Educazione e Cultura</option>
+                  <select
+                    className="form-select"
+                    id='category'
+                    aria-label="Default select example">
+                    <option defaultValue=''>Choose the category</option>
+                    <option id='1'>Lifestyle e Benessere</option>
+                    <option id='2'>Tecnologia e Innovazione</option>
+                    <option id='3'>Educazione e Cultura</option>
                   </select>
                 </div>
               </div>
 
-
               <div className='d-flex justify-content-between my-4'>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                  <input
+                    className="form-check-input"
+                    name='Lifestyle'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheckDefault"
+                  />
                   <label className="form-check-label" htmlFor="flexCheckDefault">
                     Lifestyle
                   </label>
                 </div>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                  <input
+                    className="form-check-input"
+                    name='SelfCare'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheck1"
+                  />
+                  <label className="form-check-label" htmlFor="flexCheck1">
                     SelfCare
                   </label>
                 </div>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                  <input
+                    className="form-check-input"
+                    name='TechTrends'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheck2"
+                  />
+                  <label className="form-check-label" htmlFor="flexCheck2">
                     TechTrends
                   </label>
                 </div>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                  <input
+                    className="form-check-input"
+                    name='DigitalNomad'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheck3"
+                  />
+                  <label className="form-check-label" htmlFor="flexCheck3">
                     DigitalNomad
                   </label>
                 </div>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                  <input
+                    className="form-check-input"
+                    name='Mindfulness'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheck4"
+                  />
+                  <label className="form-check-label" htmlFor="flexCheck4">
                     Mindfulness
                   </label>
                 </div>
                 <div className="form-check col-2">
-                  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                  <input
+                    className="form-check-input"
+                    name='CreativeLiving'
+                    type="checkbox"
+                    value={blogsData.tags}
+                    onChange={handleBlogData}
+                    id="flexCheck5"
+                  />
+                  <label className="form-check-label" htmlFor="flexCheck5">
                     CreativeLiving
                   </label>
                 </div>
-
-
               </div>
-
 
               <div>
                 <label htmlFor="content" className="form-label">Content</label>
                 <div className="form-floating">
-                  <textarea className="form-control" placeholder="type the blog content" id="content"></textarea>
+                  <textarea
+                    className="form-control"
+                    name='content'
+                    id="content"
+                    placeholder="type the blog content"
+                    value={blogsData.content}
+                    onChange={handleBlogData}
+                    required>
+                  </textarea>
                 </div>
               </div>
-
             </div>
-
-
           </div>
+
           <div className='d-flex justify-content-center'>
             <button className="btn btn-outline-secondary my-3" type="submit" id="button-addon2">Submit</button>
           </div>
 
         </form>
+
+
         <hr />
-        <ul className="list-group">
-          {blogsTitles.map((blogTitle, index) => <li key={index} className="list-group-item">{blogTitle}</li>)}
+        <ul className='list-group'>
+          {blogsList.map((blog) => (
+            <li key={blog.id} className="list-group-item">
+              <img src={blog.img} alt="" />
+              <div>
+                <h3>{blog.title}</h3>
+                <p>{blog.content}</p>
+              </div>
+            </li>
+          ))}
 
         </ul>
 
       </div>
     </>
+
   )
 }
 
